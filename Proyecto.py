@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import pygame
-import sys
 import pygame.locals
 from pygame.constants import *
 from pygame.mixer import music
@@ -146,7 +145,7 @@ class interfaz():
             ocultar =13 
                     
         elif (x_mouse > 462 and x_mouse <= 712) and (y_mouse > 711 and y_mouse < 799):
-            sys.exit(0)
+            return
                     
     def interfaz_ayuda(self, superficie):
         
@@ -1518,7 +1517,7 @@ class interfaz():
 def main():
     global ocultar
     x_mouse, y_mouse = pygame.mouse.get_pos()
-    ventana = pygame.display.set_mode((x,y))
+    ventana = pygame.display.set_mode((x,y),pygame.RESIZABLE)
     
     cursor = pygame.cursors.compile(CURSOR)
     pygame.mouse.set_cursor((32,32), (1,1), *cursor)
@@ -1531,13 +1530,14 @@ def main():
         while Gtk.events_pending():
             Gtk.main_iteration()
         x_mouse, y_mouse = pygame.mouse.get_pos()
-       
+
+        event = pygame.event.Event(pygame.NOEVENT)
         for eventos in pygame.event.get():
             
-            if eventos.type == QUIT:
-                sys.exit(0)
+            if eventos.type == pygame.QUIT:
+                return
                 
-            elif eventos.type == MOUSEBUTTONDOWN:
+            elif eventos.type == pygame.MOUSEBUTTONDOWN:
                 if(ocultar==1):
                     prin.poscision_elementos_1(ventana)
                     if (x_mouse > 1043 and x_mouse<= 1099) and (y_mouse >17 and y_mouse < 76):
@@ -1752,11 +1752,11 @@ def main():
                     prin.poscision_elementos_preg6_rect_malo1(ventana)
                 elif(ocultar==105):
                     prin.poscision_elementos_preg6_rect_malo2(ventana) 
-            elif eventos.type == KEYDOWN:
+            elif eventos.type == pygame.KEYDOWN:
                 
-                if eventos.key == K_ESCAPE:
+                if eventos.key == pygame.K_ESCAPE:
                     
-                    sys.exit(0)        
+                    return 1
             
                                       
         if(ocultar==1):
