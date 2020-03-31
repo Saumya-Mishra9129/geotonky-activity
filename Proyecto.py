@@ -1516,7 +1516,7 @@ class interfaz():
             
 def main():
     global ocultar
-    x_mouse, y_mouse = pygame.mouse.get_pos()
+    x, y = pygame.mouse.get_pos()
     ventana = pygame.display.set_mode((x,y),pygame.RESIZABLE)
     
     cursor = pygame.cursors.compile(CURSOR)
@@ -1525,13 +1525,16 @@ def main():
     pygame.mixer.music.load("sonido/intro.ogg")
     pygame.mixer.music.play(10)
     prin=interfaz()    
+    running = True
 
-    while True:
+    while running:
         while Gtk.events_pending():
             Gtk.main_iteration()
         x_mouse, y_mouse = pygame.mouse.get_pos()
 
-        event = pygame.event.Event(pygame.NOEVENT)
+        if not running:
+            break
+
         for eventos in pygame.event.get():
             
             if eventos.type == pygame.QUIT:
