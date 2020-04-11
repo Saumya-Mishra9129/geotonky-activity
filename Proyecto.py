@@ -1516,28 +1516,30 @@ class interfaz():
             
 def main():
     global ocultar
+    pygame.init()
     x_mouse, y_mouse = pygame.mouse.get_pos()
-    ventana = pygame.display.set_mode((x,y),pygame.RESIZABLE)
+    ventana = pygame.display.set_mode((x,y))
     
     cursor = pygame.cursors.compile(CURSOR)
     pygame.mouse.set_cursor((32,32), (1,1), *cursor)
-    
+    clock = pygame.time.Clock()
     pygame.mixer.music.load("sonido/intro.ogg")
     pygame.mixer.music.play(10)
     prin=interfaz()    
+    running = True
 
-    while True:
+    while running:
         while Gtk.events_pending():
             Gtk.main_iteration()
-        x_mouse, y_mouse = pygame.mouse.get_pos()
 
-        event = pygame.event.Event(pygame.NOEVENT)
-        for eventos in pygame.event.get():
+        events = pygame.event.get()
+        for eventos in events:
             
-            if eventos.type == pygame.QUIT:
-                return
+
                 
-            elif eventos.type == pygame.MOUSEBUTTONDOWN:
+            if eventos.type == pygame.MOUSEBUTTONDOWN:
+                x_mouse, y_mouse = pygame.mouse.get_pos()
+
                 if(ocultar==1):
                     prin.poscision_elementos_1(ventana)
                     if (x_mouse > 1043 and x_mouse<= 1099) and (y_mouse >17 and y_mouse < 76):
@@ -1752,12 +1754,15 @@ def main():
                     prin.poscision_elementos_preg6_rect_malo1(ventana)
                 elif(ocultar==105):
                     prin.poscision_elementos_preg6_rect_malo2(ventana) 
-            elif eventos.type == pygame.KEYDOWN:
-                
-                if eventos.key == pygame.K_ESCAPE:
+            elif (eventos.type == pygame.KEYDOWN and eventos.key == pygame.K_ESCAPE) or\
+                eventos.type == pygame.QUIT:
+                running = False
+                pygame.display.quit()
+                pygame.quit()
+                quit()
+
                     
-                    return 1
-            
+
                                       
         if(ocultar==1):
             prin.inter_principal(ventana)
@@ -1971,6 +1976,7 @@ def main():
         elif (ocultar==105):
             prin.interfaz_preg6_rect_malo2(ventana)
         pygame.display.update()
-                    
+        clock.tick(30)
+
 if __name__ == '__main__':
     main()
